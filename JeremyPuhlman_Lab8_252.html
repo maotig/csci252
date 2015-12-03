@@ -1,0 +1,223 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>
+		Untitled Document
+	</title>
+	    <style>
+      html,body {
+        height: 90%;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+</head>
+<body onload="loadMarkers()">
+  <div id="map"></div>
+
+Select country:
+  <select id="countries" onchange="switchMarkers()">
+  </select>
+Select Access Log:
+  <select id="access" onchange="switchMarkers()">
+    <option value='All'>All</option>
+    <option value='httpd'>HTTPD</option>
+    <option value='sshd'>SSHD</option>
+  </select><br>
+HTTPD Access log: <img src="http://maps.google.com/mapfiles/ms/icons/green-dot.png">
+SSHD Failure log: <img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png"><br>
+<footer>Jeremy Puhlman</footer>
+
+<script src='scripts/sql.js'></script>
+<script>
+
+  
+var map;
+//centered on US.
+var mapCenter = {lat:  39.570744, lng: -112.170100};
+var markers=[];
+var countries = {};
+// Function to extract content from file.
+function loadBinaryFile(path, countries, success) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", path, true); 
+        xhr.responseType = "arraybuffer";
+        xhr.onload = function() {
+            var data = new Uint8Array(xhr.response);
+            var arr = new Array();
+            for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+            success(countries, arr.join(""));
+        };
+        xhr.send();
+};
+
+
+//Initialize Map.
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 3,
+    center: mapCenter
+  });
+}
+//Onload function to get markers on map
+function loadMarkers() {
+  loadMarkersFromFiles();
+}
+//Add countrie to list. Use object so it can pull the data by key rather then index. Also removes the need to check if value is already in list.
+function addCountry(country) {
+  countries[country] = country;
+}
+
+// Set values dynamically in drop down for country list option.
+function loadCountryTable() {
+    var countryTable = "<option value='All'>All</option>";
+		var countrylist = Object.keys(countries).sort();
+		for (var country = 0; country != countrylist.length; country++) {
+		  if (countrylist[country] != "undefined" && countrylist[country].length != 0) {
+		      countryTable += "<option value='" + countrylist[country] + "'>" + countrylist[country] + "</option>";
+		  }
+		}
+		document.getElementById("countries").innerHTML = countryTable;
+}
+
+// Create google map marker
+function createMarker (title, lat, lng) {
+   return new google.maps.Marker({
+              position: {lat: parseFloat(lat), lng: parseFloat(lng)},
+              map: map,
+              title: title
+       });
+}
+// Create object to hold google marker, country and log type.
+function markerObject(title, lat, lng, country, log) {
+  mark = {
+    marker: createMarker(title, lat,lng),
+    country: country,
+    log: log
+  }
+  if (log == "sshd") {
+     mark.marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+  } else {
+    mark.marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+  } 
+  return mark;
+}
+
+// Add marker object to list of marker objects.
+function addMarker(mark) {
+  numMarkers = markers.length;
+  markers[numMarkers++] = mark;
+}
+
+function loadMarkersFromFiles () {
+    // Load failed sshd connections
+  	loadBinaryFile('failed_latlong_ip_all', countries, function(countries, data){
+  	  // rowvalue 0: IP
+  	  // rowvalue 8: LAT
+  	  // rowvalue 9: LNG
+  	  // rowvalue 2: country
+		  var ip, IP=0;
+		  var lat, LAT=8;
+		  var lng, LNG=9;
+		  var country, COUNTRY=2;
+		  var rows = data.split(/\r\n|\n/);
+
+		  for (var row = 0; row != rows.length; row++) {
+		    rowvalues = rows[row].split(",");
+		    ip=rowvalues[IP];
+		    lat=rowvalues[LAT];
+		    lng=rowvalues[LNG];
+		    country=rowvalues[COUNTRY];
+        addMarker(markerObject(ip,lat,lng, country, "sshd"));
+        addCountry(country);
+		  }
+	  });
+    // Load httpd acccess log
+  	loadBinaryFile('access_log.sqlite', countries, function(countries, data){
+  	  // rowvalue 0: IP
+  	  // rowvalue 1: LAT
+  	  // rovalue 2: LNG
+  	  // rowvalue 3: country
+  	  var ip, IP=0;
+		  var lat, LAT=1;
+		  var lng, LNG=2;
+		  var country, COUNTRY=3;
+		  var db = new SQL.Database(data);
+		  var res = db.exec("SELECT IP,Latitude,Longitude,CountryName FROM access_log");
+		  var rows = res[0].values;
+		  for (var row = 0; row != rows.length; row++) {
+		    rowvalues = rows[row];
+		    ip=rowvalues[IP];
+		    lat=rowvalues[LAT];
+		    lng=rowvalues[LNG];
+		    country=rowvalues[COUNTRY];
+        addMarker(markerObject(ip,lat,lng, country, "httpd"));
+        addCountry(country);
+		  }
+		  //save some memory by freeing database.
+		  delete db;
+		  // Add list of tables to countries option table.
+      loadCountryTable();
+	  });
+}
+
+// Clear all the markers from map.
+
+function clearMarkers() {
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].marker.setMap(null);
+  }
+}
+
+//Move map to position and zoom
+function gotoMarker(zoom,position) {
+     map.setZoom(zoom);
+     map.setCenter(position);
+}
+
+function switchMarkers() {
+  // Clear map of markers
+  clearMarkers();
+  // Get the selected value of countries list
+  var x = document.getElementById("countries").selectedIndex;
+  var country = document.getElementById("countries")[x].value;
+  // Get the selected value of log list
+  var y = document.getElementById("access").selectedIndex;
+  var access = document.getElementById("access")[y].value;
+  // use center map by default.
+  var center = mapCenter;
+  // check if marker is in the given country and is from the right log
+  for (var i = 0; i != markers.length; i++){
+    if ((markers[i].country == country || country === "All") &&
+        (markers[i].log == access || access == "All")) {
+       markers[i].marker.setMap(map);
+       if (country != "All"){
+         center = markers[i].marker.position;
+       }
+    }
+  }
+  // Center map on country listed picking the last marker as center
+  if (country != "All" && center != mapCenter) {
+    gotoMarker(4,center);
+  }
+  else {
+    // otherwise use map center as the zoom and position.
+    gotoMarker(3,mapCenter);
+  }
+}
+
+
+
+</script>
+
+
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA0uLok5ObSxzgylR_wm-OOcjlAjYONqZM&signed_in=false&callback=initMap">
+    </script>
+</body>
+</html>

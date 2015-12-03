@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<!-- API KEY AIzaSyA0uLok5ObSxzgylR_wm-OOcjlAjYONqZM 
+Jeremy Puhlman
+This set of sources is the smashing together of three of the sample programs for the google maps abi
+
+The starting point of the page was:
+https://developers.google.com/maps/documentation/javascript/examples/marker-animations-iteration
+To make the maps automatically zoom in on the location when clicked or when the link is clicked.
+https://developers.google.com/maps/documentation/javascript/examples/event-simple
+To get the dialogs with the location names:
+https://developers.google.com/maps/documentation/javascript/examples/event-closure
+
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Favorite Places I have been.</code></title>
+    <style>
+      html,body {
+        height: 90%;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+      }
+      /* Set up undecorated links */
+      a:visited {
+        text-decoration: none;
+      }
+      a:link {
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      a:active {
+        text-decoration: underline;
+      }
+      #map {
+        height: 80%;
+      }
+    </style>
+  </head>
+  <!-- The original code provided a button to drop the pins, I moved that action to onlaod -->
+  <body onload="drop()">
+    <H2>Places I have enjoyed visiting</H2>
+    <h4>Click links or markers to zoom map.</h4>
+    <!--links to locations. Actions zoom the map to the location when clicked -->
+      <a href="#" onclick="goto(16,neighborhoods[0][1]); return false;">French Quarter, New Orleans, Louisiana</a>
+      <br><a href="#" onclick="goto(16,neighborhoods[1][1]); return false;">Honolulu, Hawaii</a>
+      <br><a href="#" onclick="goto(16, neighborhoods[2][1]); return false;">Pike's Place Market, Seatle, Washington</a>
+      <br><a href="#" onclick="goto(4,mapCenter); return false;">Re-center Map!</a>
+      <br>
+    
+    <div id="map"></div>
+    <footer><p>Jeremy Puhlman</p></footer>
+    <script>
+
+// Set up array of locations with titles and lat and lng values.
+var neighborhoods = [
+  ["French Quarter, New Orleans, Louisiana", {lat: 29.957420, lng: -90.062909}],
+  ["Honolulu, Hawaii", {lat: 21.305174, lng: -157.859083}],
+  ["Pike's Place Market, Seatle, Washington", {lat: 47.609356, lng: -122.341979}]
+];
+
+var markers = [];
+var map;
+//Define center of map so that all three map locations can be seen.
+var mapCenter = {lat:  39.570744, lng: -112.170100}
+
+//Create map - taken largely from the sample code.
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 4,
+    center: mapCenter
+  });
+  var myLatLng = {lat: -25.363, lng: 131.044};
+  var marker = new google.maps.Marker({
+    position: myLatLng,
+    map: map,
+    title: 'Hello World!'
+  });
+
+}
+
+//Drop pins when action is called, in this case on load of page.
+function drop() {
+  clearMarkers();
+  for (var i = 0; i < neighborhoods.length; i++) {
+    addMarkerWithTimeout(neighborhoods[i][1],neighborhoods[i][0], i * 200);
+  }
+}
+
+// Function started from sample but added the click action based on another sample, to
+// enable zoom to location on click of the marker.
+
+function addMarkerWithTimeout(position, title, timeout) {
+  window.setTimeout(function() {
+    var marker = new google.maps.Marker({
+      position: position,
+      map: map,
+      animation: google.maps.Animation.DROP,
+      title: title
+    });
+    marker.addListener('click',function() {
+      map.setZoom(16);
+      map.setCenter(marker.getPosition());
+    });
+    var infowindow = new google.maps.InfoWindow({
+        content: title
+    });
+    infowindow.open(marker.get('map'), marker);
+    markers.push(marker);
+  }, timeout);
+}
+
+//verbatim function from the sample code.
+function clearMarkers() {
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(null);
+  }
+  markers = [];
+}
+
+// Generalized function to zoom to a specific location. Used in onclick actions in the links.
+function goto(zoom,position) {
+     map.setZoom(zoom);
+     map.setCenter(position);
+}
+    </script>
+  <!-- Google Api key code -->
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA0uLok5ObSxzgylR_wm-OOcjlAjYONqZM&signed_in=false&callback=initMap"></script>
+  </body>
+</html>

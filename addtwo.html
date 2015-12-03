@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Add two numbers</title>
+</head>
+
+<body>
+
+<p>Click button to add numbers:</p>
+<button onclick="addnumbers()">Do it</button>
+<br>
+<br>Set first number:
+<input type="text" id="value1" name="text1">Set second number:
+<input type="text" id="value2" name="text2">
+<p id="output"></p>
+<script>
+function addnumbers() 
+{
+   var x = document.getElementById("value1").value;
+   var y = document.getElementById("value2").value;
+   var z = parseInt(x) + parseInt(y);
+   document.getElementById("output").innerHTML = z;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "Jeremy puhlman CSCI 252\n\n\nLab 1: Personal Page\n\n\nLab 2: Java script the good parts\n\n\nLab 3: Dice roller\n\n\nLab 4 JSD3\n\n\nLab 5 Morse code generation\n\n\nLab 6 Google Maps API - places I enjoyed visiting\n\n\nLab 7: Dropbox API\n\n\nLab 8: Access Log\n\n\nLab 9: Links to lab work\n\n\nLab 10: Porfolio\n\n\nLab 11: nodejs hello world", 
+            "title": "Home"
+        }, 
+        {
+            "location": "/lab11/", 
+            "text": "nodejs hello world\n\n\nSample code from Chaper 1 of \nLearning Node\n.\n\n\n// load http module\nvar http = require('http');\n// create http server\nhttp.createServer(function (req, res) {\n // content header\n  res.writeHead(200, {'content-type': 'text/plain'});\n   // write message and signal communication is complete\n    res.end(\nHello, World!\\n\n);\n    }).listen(8124);\n    console.log('Server running on 8124');\n\n\n\n\n\nOutput from running hello.js\n\n\n node hello.js\nServer running on 8124\n\n\n\n\nOutput in the browser", 
+            "title": "Lab11"
+        }, 
+        {
+            "location": "/lab11/#nodejs-hello-world", 
+            "text": "Sample code from Chaper 1 of  Learning Node .  // load http module\nvar http = require('http');\n// create http server\nhttp.createServer(function (req, res) {\n // content header\n  res.writeHead(200, {'content-type': 'text/plain'});\n   // write message and signal communication is complete\n    res.end( Hello, World!\\n );\n    }).listen(8124);\n    console.log('Server running on 8124');  Output from running hello.js   node hello.js\nServer running on 8124  Output in the browser", 
+            "title": "nodejs hello world"
+        }, 
+        {
+            "location": "/lab2/", 
+            "text": "Javascript the good parts\n\n\nDouglaus Crocford\n\n\nWorlds most understood Programming language\n\n\nLanguage of contrasts\n\n\n\n\nCut and pasters \n\n\ncomputer scientists\n\n\n\n\nComplaints\n\n\n\n\nJava script is not a language I know\n\n\nThe browser programming experience is awful\n\n\nIts not fast enough\n\n\nGoogle developing faster engine\n\n\nDom is the problem\n\n\n\n\n\n\nThe language is just a pile of mistakes\n\n\n\n\nJava script influence\n\n\n\n\nSelf\n\n\nprototypical inheritiance\n\n\ndynamice objects\n\n\n\n\n\n\nscheme\n\n\nlamda\n\n\nloose typing\n\n\n\n\n\n\nPerl\n\n\nsyntax\n\n\nconventions\n\n\n\n\n\n\njava\n\n\nregular expresssions\n\n\n\n\n\n\n\n\nThe bad parts\n\n\n\n\nGlobal Variables\n\n\n\n\n\n\nadds and concatenates\n\n\n\n\n\n\nSemicolon insertion\n\n\ntypeof\n\n\nwith and eval\n\n\nphony arrays\n\n\n== and !=\n\n\ncrazy transitivity \n\n\n\n\n\n\nfalse, null, undefined, NaN\n\n\nobject return undefined if value not part of object\n\n\n\n\nGood fetures that interact badly\n\n\n\n\nObject inherit from other objects\n\n\nFunctions can be members of objects\n\n\nfor..in statment mixes inherited functions with the desired data members\n\n\n\n\nfor in is troublesome\n\n\n\n\nDesgin question should for..in do a shallow skim or a deep dredge\n\n\nDecision: Deep Dredge. Thr programmer must explicitly filter out the deep members\n\n\nExcept they didn't tell anybody\n\n\nConsquence: lots of confusion\n\n\nBetter decision: Don't release language until we know the right answer\n\n\n\n\nBad Heritiage\n\n\n\n\nBlockless statements\n\n\nExpression statements\n\n\nFloating point  arithmetic\n\n\n++ and --\n\n\nswitch\n\n\n\n\nThe Good Parts\n\n\n\n\nLamda\n\n\nDynamic Objects\n\n\nLoose typing\n\n\nObject Literals\n\n\n\n\nInheritiance\n\n\n\n\nInheritance is object-oriented code reuse\n\n\nTwo schools\n\n\nClassical\n\n\nPrototypal\n\n\n\n\n\n\n\n\nPrototypal Inheritance\n\n\n\n\nClass-free\n\n\nObjects inherit from objects\n\n\nAn object contains a link to another object\n\n\nDelegation, differencial inheritance\n\n\nObject.create\n\n\n\n\n\n\n\n\nNew\n\n\n\n\nThe new operator is required when calling a constructor function\n\n\nif new is omited is omitted, the global object is clobbered by the constructor.\n\n\nthere is no compiled time or runtime warning\n\n\n\n\nGlobal\n\n\n\n\nuse closer\n\n\nmodule pattern\n\n\n\n\npower constrcutors\n\n\n\n\nMake an object\n\n\nObject literal\n\n\nnew\n\n\nobject.create\n\n\ncall another power constructor\n\n\n\n\n\n\nDefine some variables and functions\n\n\nAugment the object with privileged methods\n\n\nreturn the object\n\n\n\n\nClosure\n\n\n\n\na function object contains\n\n\na function \n\n\nreference to the enviornment it was created\n\n\n\n\n\n\n\n\nStyle\n\n\nblock {\n...\n}\n\n\n\n\nWorks well in javascript\n\n\nblock\n{\n...\n}\n\n\n\n\nDoes not work well in javascript\n\n\nWorking with the grain\n\n\nBeautiful Code\n\n\nJSLint\n\n\n\n\nJslint defines a professional subset of JavaScript\n\n\nIt imposes a programming discipline\n\n\nhttp://www.jslint.com\n\n\nJSlint will hurt your feelings\n\n\n\n\nUnlearning is really hard\n\n\n\n\nPerfectly Fine == Faulty\n\n\n\n\nComing Soon\n\n\n\n\nECMAScript Fourth Edition\n\n\nCorrections\n\n\nReality\n\n\nsupport for object hardening\n\n\nstrict mode for reliabilty\n\n\nwaiting on implimentations\n\n\n\n\nNot Coming Soon\n\n\n\n\nES4 - cancelled\n\n\nInstead, [ES-Harmony]\n\n\nSo for this project has no defined goals or rules\n\n\n\n\nSafe Subsets\n\n\n\n\nThe most effective way to make this language better is to make it smaller\n\n\nFBJS\n\n\nCaja and Cajita\n\n\nADsafe\n\n\nThese subsets will be infoming the design and new secure language to replace javascript.\n\n\n\n\nReview the good parts\n\n\n\n\nYour java script application can reach billions\n\n\nif you avoid the bad parts JS works really well. There is some brilliance in it\n\n\nit is possible to write good programs.", 
+            "title": "Lab2"
+        }, 
+        {
+            "location": "/lab2/#javascript-the-good-parts", 
+            "text": "", 
+            "title": "Javascript the good parts"
+        }, 
+        {
+            "location": "/lab2/#douglaus-crocford", 
+            "text": "", 
+            "title": "Douglaus Crocford"
+        }, 
+        {
+            "location": "/lab2/#worlds-most-understood-programming-language", 
+            "text": "Language of contrasts   Cut and pasters   computer scientists   Complaints   Java script is not a language I know  The browser programming experience is awful  Its not fast enough  Google developing faster engine  Dom is the problem    The language is just a pile of mistakes   Java script influence   Self  prototypical inheritiance  dynamice objects    scheme  lamda  loose typing    Perl  syntax  conventions    java  regular expresssions     The bad parts   Global Variables    adds and concatenates    Semicolon insertion  typeof  with and eval  phony arrays  == and !=  crazy transitivity     false, null, undefined, NaN  object return undefined if value not part of object   Good fetures that interact badly   Object inherit from other objects  Functions can be members of objects  for..in statment mixes inherited functions with the desired data members   for in is troublesome   Desgin question should for..in do a shallow skim or a deep dredge  Decision: Deep Dredge. Thr programmer must explicitly filter out the deep members  Except they didn't tell anybody  Consquence: lots of confusion  Better decision: Don't release language until we know the right answer   Bad Heritiage   Blockless statements  Expression statements  Floating point  arithmetic  ++ and --  switch   The Good Parts   Lamda  Dynamic Objects  Loose typing  Object Literals   Inheritiance   Inheritance is object-oriented code reuse  Two schools  Classical  Prototypal     Prototypal Inheritance   Class-free  Objects inherit from objects  An object contains a link to another object  Delegation, differencial inheritance  Object.create     New   The new operator is required when calling a constructor function  if new is omited is omitted, the global object is clobbered by the constructor.  there is no compiled time or runtime warning   Global   use closer  module pattern   power constrcutors   Make an object  Object literal  new  object.create  call another power constructor    Define some variables and functions  Augment the object with privileged methods  return the object   Closure   a function object contains  a function   reference to the enviornment it was created     Style  block {\n...\n}  Works well in javascript  block\n{\n...\n}  Does not work well in javascript", 
+            "title": "Worlds most understood Programming language"
+        }, 
+        {
+            "location": "/lab2/#working-with-the-grain", 
+            "text": "Beautiful Code  JSLint   Jslint defines a professional subset of JavaScript  It imposes a programming discipline  http://www.jslint.com  JSlint will hurt your feelings   Unlearning is really hard   Perfectly Fine == Faulty   Coming Soon   ECMAScript Fourth Edition  Corrections  Reality  support for object hardening  strict mode for reliabilty  waiting on implimentations   Not Coming Soon   ES4 - cancelled  Instead, [ES-Harmony]  So for this project has no defined goals or rules   Safe Subsets   The most effective way to make this language better is to make it smaller  FBJS  Caja and Cajita  ADsafe  These subsets will be infoming the design and new secure language to replace javascript.   Review the good parts   Your java script application can reach billions  if you avoid the bad parts JS works really well. There is some brilliance in it  it is possible to write good programs.", 
+            "title": "Working with the grain"
+        }, 
+        {
+            "location": "/porfolio/", 
+            "text": "Porfolio\n\n\nEach project is provided with a simple explantion of what the porject was about and how it works.\nTo view the actual project click on the image of the page.\n\n\nSimple webpage about my background\n\n\n\n\nSimple and animated dice roller\n\n\nIn this project we created a java script application to roll a die. The first version was a simple\nimage projected based on the random value produced by the random number generator. \n\n\nThe second version uses imagecube and jquery to produce an animation of the die actually rolling to\nget to the right value.\n\n\n\n\nMorris Code translator\n\n\nIn this project we produced a translation of letters to morris code. This is done in three separate\noutputs. The first is simple text to show what it should look like. Then it produces SVG rendering of\neach dash and dah in time with an audio output of each dash and dah.\n\n\n\n\nPlaces I enjoyed visiting\n\n\nIn this project we learned to work with the google maps api. From setting the keys for that access and\nthe proecess of setting up each pin on the map for the locations. Each of the cities are list above\nthe map, and selecting the link will zoom the map to the location indicated by the link. \n\n\n\n\nDropbox api example\n\n\nIn this project we took the dropbox sample code to show that were able to setup the dropbox api and host \nthe code for the task list example on the external site.\n\n\n\n\nSQL lite and plain text Access log mapping.\n\n\nIn this project we took an sqlite database that contains the Latitude and Longitude of the ip addresses of those\nthat accessed the project server, then mapped those values on a google map using the google map api.", 
+            "title": "Porfolio"
+        }, 
+        {
+            "location": "/porfolio/#porfolio", 
+            "text": "Each project is provided with a simple explantion of what the porject was about and how it works.\nTo view the actual project click on the image of the page.", 
+            "title": "Porfolio"
+        }, 
+        {
+            "location": "/porfolio/#simple-webpage-about-my-background", 
+            "text": "", 
+            "title": "Simple webpage about my background"
+        }, 
+        {
+            "location": "/porfolio/#simple-and-animated-dice-roller", 
+            "text": "In this project we created a java script application to roll a die. The first version was a simple\nimage projected based on the random value produced by the random number generator.   The second version uses imagecube and jquery to produce an animation of the die actually rolling to\nget to the right value.", 
+            "title": "Simple and animated dice roller"
+        }, 
+        {
+            "location": "/porfolio/#morris-code-translator", 
+            "text": "In this project we produced a translation of letters to morris code. This is done in three separate\noutputs. The first is simple text to show what it should look like. Then it produces SVG rendering of\neach dash and dah in time with an audio output of each dash and dah.", 
+            "title": "Morris Code translator"
+        }, 
+        {
+            "location": "/porfolio/#places-i-enjoyed-visiting", 
+            "text": "In this project we learned to work with the google maps api. From setting the keys for that access and\nthe proecess of setting up each pin on the map for the locations. Each of the cities are list above\nthe map, and selecting the link will zoom the map to the location indicated by the link.", 
+            "title": "Places I enjoyed visiting"
+        }, 
+        {
+            "location": "/porfolio/#dropbox-api-example", 
+            "text": "In this project we took the dropbox sample code to show that were able to setup the dropbox api and host \nthe code for the task list example on the external site.", 
+            "title": "Dropbox api example"
+        }, 
+        {
+            "location": "/porfolio/#sql-lite-and-plain-text-access-log-mapping", 
+            "text": "In this project we took an sqlite database that contains the Latitude and Longitude of the ip addresses of those\nthat accessed the project server, then mapped those values on a google map using the google map api.", 
+            "title": "SQL lite and plain text Access log mapping."
+        }
+    ]
+}

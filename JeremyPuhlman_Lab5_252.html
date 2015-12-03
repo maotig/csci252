@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Translate text to morse code</title>
+<script src="http://jaysalvat.github.io/buzz/releases/latest/buzz.min.js"></script>
+<meta content="utf-8" http-equiv="encoding">
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+</head>
+
+<body>
+
+<br>Add text to Translate
+<input type="text" id="value1" name="text1">
+
+<button onclick="TranslateMorse()">Translate!</button>
+<p id="output"></p>
+<p id="outputsvg"></p>
+
+<!-- Lay out array with all of the morse code assoications -->
+<script>
+var morse = [];
+morse["a"] = ".-";
+morse["b"] = "-...";
+morse["c"] = "-.-.";
+morse["d"] = "-..";
+morse["e"] = ".";
+morse["f"] = "..-.";
+morse["g"] = "--.";
+morse["h"] = "....";
+morse["i"] = "..";
+morse["j"] = ".---";
+morse["k"] = "-.-";
+morse["l"] = ".-..";
+morse["m"] = "--";
+morse["n"] = "-.";
+morse["o"] = "---";
+morse["p"] = ".--.";
+morse["q"] = "--.-";
+morse["r"] = ".-.";
+morse["s"] = "...";
+morse["t"] = "-";
+morse["u"] = "..-";
+morse["v"] = "...-";
+morse["w"] = ".--";
+morse["x"] = "-..-";
+morse["y"] = "-.--";
+morse["z"] = "--..";
+morse["1"] = ".----";
+morse["2"] = "..---";
+morse["3"] = "...--";
+morse["4"] = "....-";
+morse["5"] = ".....";
+morse["6"] = "-....";
+morse["7"] = "--...";
+morse["8"] = "---..";
+morse["9"] = "----.";
+morse["0"] = "-----";
+morse[" "] = " ";
+
+
+function TranslateMorse() 
+{
+   var x = document.getElementById("value1").value;
+   var str = "";
+   // Set up SVG values for dot, dash and space.
+   var dot = '<svg height="20" width="20"><circle cx="10" cy="10" r="5" stroke="black" stroke-width="1" fill="black" /></svg>';
+   var dash = '<svg width="33" height="20"><rect width="30" height="20" stroke="black" stroke-width="1" fill="black"/></svg>';
+   var space = '<svg width="20" height="20"><rect width="20" height="20" stroke="white" stroke-width="1" fill="white"/></svg>';
+   // Array of audio objects by the order of when they are used in the string.
+   
+   var n = 0;
+   var p = 0;
+   // audio for da/dash
+   var longBeep = new buzz.sound(['audio/morse_log.mp3', 'audio/morse_log.ogg']);
+   //audio for dot
+   var shortBeep = new buzz.sound(['audio/morse_short.mp3', 'audio/morse_short.ogg']);
+   //audio for space
+   var pauseBeep = new buzz.sound(['audio/morse_pause.mp3','audio/morse_pause.ogg']);
+   var nextAudio = [];
+   var blips = [];
+
+   //call back function for audio play. When one clip is done, it calls back to this function to start the next clip.
+   function onNext() {
+     var blips_string = blips[0];
+     var i = 1;
+     p += 1; 
+     if (nextAudio[p] != undefined) {
+        
+       while (i < p && blips[i] != undefined) {
+            blips_string += blips[i];
+            i += 1;
+       }
+       document.getElementById("outputsvg").innerHTML = blips_string;
+       nextAudio[p].play()
+     
+     }
+   }
+   
+   //set up call backs for each audio clip
+   longBeep.bind("ended",function (e) {
+     onNext();
+   });
+   shortBeep.bind("ended",function (e) {
+     onNext();
+   });
+   pauseBeep.bind("ended",function(e) {
+     onNext();
+   });
+   //convert entrys to lowercase values to match array
+   x = x.toLowerCase();
+   
+   for (i in x.split("")) {
+     blip = morse[x[i]]
+     //plain string output
+     str += " "+ blip;
+     //svg and audio output
+     for (b in blip.split("")) {
+       if (blip[b] === ".") {
+         blips[n] = dot
+         nextAudio[n] = shortBeep
+         n += 1
+         
+       }
+       if (blip[b] === "-") {
+         blips[n] = dash;
+         nextAudio[n] = longBeep;
+         n += 1;
+       }
+     }
+     // add two pauses between words since the pause audio is ~ 3 units and a word break is supposed to be 7
+     blips[n] = space;
+     nextAudio[n] = pauseBeep;
+     n += 1;
+     blips[n] = space;
+     nextAudio[n] = pauseBeep;
+     n += 1;
+   }
+   document.getElementById("output").innerHTML = str;
+   document.getElementById("outputsvg").innerHTML = blips[0]
+   nextAudio[0].play();
+  
+}
+</script>
+</body>
+</html>
